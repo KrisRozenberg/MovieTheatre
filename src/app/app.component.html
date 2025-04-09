@@ -1,3 +1,37 @@
-<h1>{{title}}</h1>
-
-<router-outlet />
+<div class='flex flex-col flex-auto h-full w-full min-w-0'>
+    <!-- Header -->
+    <div class='relative flex flex-0 items-center w-full min-h-16 px-4 md:px-6 shadow bg-indigo-50'>  
+      <div class="inline-flex items-center justify-end w-full">
+        @if(!authService.isAuthenticated()) {
+            <button
+                mat-icon-button
+                type="button"
+                [routerLink]="['/', appUrlsHelper.signIn]"
+            >
+                <mat-icon>login</mat-icon>
+            </button>
+        }
+        @else {
+            <button
+                mat-icon-button
+                type="button"
+                (click)="authService.signOut()"
+            >
+                <mat-icon>logout</mat-icon>
+            </button>
+        }
+      </div>
+    </div>
+  
+    <!-- Content -->
+    <div class='flex flex-col flex-auto'>
+      <router-outlet/>
+    </div>
+  
+    <!-- Footer -->
+    <div class='relative flex flex-0 items-center justify-center w-full min-h-14 px-4 md:px-6 border-t bg-indigo-50'>
+      <span class='font-medium text-secondary'>
+        Movie Theatre &copy; 2025
+      </span>
+    </div>
+  </div>

@@ -1,0 +1,87 @@
+<div class="flex flex-col items-center sm:justify-center min-h-[80vh]">
+    <div class="w-full sm:w-auto py-8 px-4 sm:p-12 sm:rounded-2xl sm:shadow sm:bg-card">
+        <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
+            <div class="title-font font-extrabold text-center">Sign in</div>   
+
+            <form class="mt-8" [formGroup]="signInForm">
+                <mat-form-field class="w-full mb-2">
+                    <mat-label>Username</mat-label>
+                    <input
+                        type="text"
+                        matInput
+                        formControlName="username"
+                        required
+                    >
+                    @if (
+                        signInForm.get('username')?.touched &&
+                        signInForm.get('username')?.hasError('required')
+                    ) {
+                        <mat-error>Username is required</mat-error>
+                    }
+                </mat-form-field>
+    
+                <mat-form-field class="w-full">
+                    <mat-label>Password</mat-label>
+                    <input
+                        matInput
+                        type="password"
+                        formControlName="password"
+                        #passwordField
+                    >
+                    <button
+                        mat-icon-button
+                        type="button"
+                        (click)="passwordField.type === 'password' ? passwordField.type = 'text' : passwordField.type = 'password'"
+                        matSuffix
+                    >
+                        @if (passwordField.type === 'password') {
+                            <mat-icon>visibility</mat-icon>
+                        }
+                        @if (passwordField.type === 'text') {
+                            <mat-icon>visibility_off</mat-icon>
+                        }
+                    </button>
+                    @if (
+                        signInForm.get('password')?.touched &&
+                        signInForm.get('password')?.hasError('required')
+                    ) {
+                        <mat-error>Password is required</mat-error>
+                    }
+                    @else if (
+                        signInForm.get('password')?.touched &&
+                        signInForm.get('password')?.hasError('pattern')
+                    ) {
+                        <mat-error>
+                            Password must include at least 1 uppercase letter, 1 lowercase letter, 1 number, 
+                            1 symbol, and be at least 6 characters long
+                        </mat-error>
+                    }
+                </mat-form-field>
+
+                <button
+                    class="w-full mt-6"
+                    [ngClass]="{
+                        'mt-12': 
+                            signInForm.get('password')?.hasError('pattern') && 
+                            !signInForm.get('password')?.hasError('required') &&
+                            signInForm.get('password')?.touched
+                    }"
+                    mat-flat-button
+                    type="submit"
+                    [disabled]="isRequestSending"
+                    (click)="signIn()"
+                >
+                    @if (!isRequestSending) {
+                        <span>Sign in</span>
+                    }
+                    @else {
+                        <mat-progress-spinner
+                            [diameter]="24"
+                            [mode]="'indeterminate'"
+                        ></mat-progress-spinner>
+                    }
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
