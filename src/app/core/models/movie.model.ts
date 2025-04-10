@@ -1,14 +1,14 @@
 export interface MovieShort {
     Title: string;
     Year: number;
-    Rated: string; //pg-13
-    Runtime: string;
-    Genre: string; //enum[]
-    Plot: string;
-    Country: string;
+    // Rated: string; //pg-13
+    // Runtime: string;
+    // Genre: string; //enum[]
+    // Plot: string;
+    // Country: string;
     Poster: string;
-    imdbRatings: number;
-    imdbVotes: number;
+    // imdbRatings: number;
+    // imdbVotes: number;
     imdbID: string;
 }
 

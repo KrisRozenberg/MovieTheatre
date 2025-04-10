@@ -11,3 +11,8 @@ export interface JwtResponse {
   token: string;
   // refresh: string; - in perspective
 }
+
+export interface PaginatedResponse<T> extends Response {
+  Search: T[];
+  totalResults: number;
+}
