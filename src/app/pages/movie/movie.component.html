@@ -1,0 +1,45 @@
+<div class="flex w-full py-8 md:p-16 justify-center md:items-center">
+    <div class="rounded-lg shadow bg-gray-50 md:h-4/5 w-7/8 md:w-4/5 flex flex-col md:flex-row md:p-6">
+        <img class="md:h-full" [src]="movie.Poster" alt="Movie Poster" />
+        <div class="flex flex-col justify-between m-6 md:m-0 md:ml-10">
+            <div class="w-full">
+                <div><b>Title:</b> {{movie.Title}}</div>
+                <div><b>Year:</b> {{movie.Year}}</div>
+                <div><b>Rated:</b> {{movie.Rated}}</div>
+                <div><b>Genre:</b> {{movie.Genre}}</div>
+                <div><b>Country:</b> {{movie.Country}}</div>
+                <div><b>Runtime:</b> {{movie.Runtime}}</div>
+                <div class="pt-6"><b>Plot:</b> {{movie.Plot}}</div>
+            </div>
+
+            <div class="w-full mt-6 flex flex-col md:flex-row gap-4 justify-between items-end">
+                <button
+                    mat-flat-button
+                    class="w-full md:w-1/3"
+                    (click)="openBookDialog()"
+                >
+                    <mat-icon>add</mat-icon>
+                    Book Tickets
+                </button>
+
+                <button
+                    mat-flat-button
+                    color="secondary"
+                    class="w-full md:w-1/3 button-secondary"
+                    (click)="openCommentsDialog()"
+                >
+                    Comments ({{movie.comments.length}})
+                </button>
+
+                <star-rating 
+                    class="self-center md:self-end"
+                    [starType]="'svg'" 
+                    labelText="Rate:"
+                    staticColor="ok"
+                    [rating]="movie.personalRating"
+                    (ratingChange)="saveRated($event)"
+                ></star-rating>
+            </div>
+        </div>
+    </div>
+</div>

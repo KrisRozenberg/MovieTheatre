@@ -26,7 +26,12 @@
     <!-- movies list -->
     <div class="grid gap-4 md:grid-cols-2">
         @for(movie of movies; track movie.imdbID) {
-            <div class="flex flex-row w-full md:w-[400px] justify-between p-4 rounded-sm shadow justify-self-center">
+            <div 
+                class="flex flex-row w-full md:w-[400px] justify-between p-4 rounded-sm shadow justify-self-center cursor-pointer"
+                (click)="goToMovie(movie.imdbID)"
+                (keydown)="goToMovie(movie.imdbID)" 
+                tabindex="{0}"
+            >
                 <div class="flex flex-col">
                     <div><b>Title:</b> {{movie.Title}}</div>
                     <div><b>Year:</b> {{movie.Year}}</div>

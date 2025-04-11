@@ -6,6 +6,7 @@ import { initialFilterPagination } from '../../core/helpers/consts-helper';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,13 +28,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     public movieService: MovieService,
-    private _changeDetectorRef: ChangeDetectorRef
+    private _changeDetectorRef: ChangeDetectorRef,
+    private _router: Router
   ) {}
 
   ngOnInit(): void {
     this.movieService.movies$.subscribe((movies) => {
       this.movies = movies;
-      console.log(this.movies);
     });
 
     this.search.valueChanges.pipe(
@@ -70,5 +71,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return control.value && isNaN(Number(control.value)) 
       ? { notNumber: true } 
       : null;
+  }
+
+  goToMovie(id: string) {
+    this._router.navigate([`movie/${id}`]);
   }
 }

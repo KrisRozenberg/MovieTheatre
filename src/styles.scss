@@ -1,4 +1,13 @@
 @use "tailwindcss";
+@use 'css-star-rating/css/star-rating';
+@use '@angular/material' as mat;
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.button-secondary {
+    @include mat.button-overrides((
+      filled-container-color: #d7e3ff,
+      filled-label-text-color: #00458f,
+    ));
+  }
