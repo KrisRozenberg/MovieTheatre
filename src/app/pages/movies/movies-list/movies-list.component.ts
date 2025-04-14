@@ -1,21 +1,21 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { MovieService } from '../../core/services/movie.service';
-import { MovieShort } from '../../core/models/movie.model';
+import { MovieService } from '../../../core/services/movie.service';
+import { MovieShort } from '../../../core/models/movie.model';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { initialFilterPagination } from '../../core/helpers/consts-helper';
+import { initialFilterPagination } from '../../../core/helpers/consts-helper';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-movies-list',
   imports: [FormsModule, ReactiveFormsModule, MatFormField, MatInputModule, MatLabel, MatError],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss',
+  templateUrl: './movies-list.component.html',
+  styleUrl: './movies-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class MoviesListComponent implements OnInit, OnDestroy {
   movies: MovieShort[];
   search = new FormControl(initialFilterPagination.search);
   year = new FormControl('', Validators.compose([
@@ -74,6 +74,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   goToMovie(id: string) {
-    this._router.navigate([`movie/${id}`]);
+    this._router.navigate([`movies/${id}`]);
   }
 }

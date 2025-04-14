@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { MovieService } from '../../core/services/movie.service';
-import { Movie } from '../../core/models/movie.model';
+import { MovieService } from '../../../core/services/movie.service';
+import { Movie } from '../../../core/models/movie.model';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { RatingChangeEvent, StarRatingConfigService, StarRatingModule } from 'angular-star-rating';

@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { ResolveFn } from '@angular/router';
 
-import { dashboardResolver } from './dashboard.resolver';
+import { moviesResolver } from './movies.resolver';
 
-describe('dashboardResolver', () => {
+describe('moviesResolver', () => {
   const executeResolver: ResolveFn<boolean> = (...resolverParameters) => 
-      TestBed.runInInjectionContext(() => dashboardResolver(...resolverParameters));
+      TestBed.runInInjectionContext(() => moviesResolver(...resolverParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

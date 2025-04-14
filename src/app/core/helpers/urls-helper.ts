@@ -1,4 +1,4 @@
 export class AppUrlsHelper {
-    static readonly dashboard = 'dashboard';
+    static readonly moviesList = 'movies';
     static readonly signIn = 'sign-in';
 }
