@@ -58,12 +58,26 @@ export class MovieService {
   }
 
   rateMovie(movieToRate: Movie): void {
-    const updatedRatedMovies = this._ratedMovies
-      .getValue()
-      .filter((movie) => movie.imdbID !== movieToRate.imdbID);
-    updatedRatedMovies.push(movieToRate);
+    const ratedMovies = this._ratedMovies.getValue();
+
+    const foundMovie = ratedMovies
+      .find((movie) => movie.imdbID === movieToRate.imdbID);
+    if (foundMovie) {
+      foundMovie.personalRating = movieToRate.personalRating;
+    }
+    else {
+      ratedMovies.push(movieToRate);
+    }
     
-    this._ratedMovies.next(updatedRatedMovies);
+    this._ratedMovies.next(ratedMovies);
+  }
+
+  cancelBooking(movieId: string): void {
+    const updatedBookedMovies = this._bookedMovies
+      .getValue()
+      .filter((movie) => movie.imdbID !== movieId);
+
+    this._bookedMovies.next(updatedBookedMovies);
   }
 
   private adjustCustomFields(movie: Movie): void {

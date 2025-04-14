@@ -5,7 +5,7 @@ import { MatError, MatFormField, MatLabel, MatSuffix } from '@angular/material/f
 import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 import { SignInOneFactor } from '../../core/models/auth.model';
 import { NgClass } from '@angular/common';
@@ -36,7 +36,8 @@ export class SignInComponent implements OnInit {
 
   constructor(
     private _authService: AuthService,
-    private _router: Router
+    private _router: Router,
+    private _route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -66,7 +67,8 @@ export class SignInComponent implements OnInit {
         .subscribe({
           next: (res) => {
             this._authService.parseJwtResponse(res.model);
-            this._router.navigate(['']);
+            const redirectTo = this._route.snapshot.queryParamMap.get('redirectURL');
+            this._router.navigate([redirectTo ? redirectTo : '']);
           },
           error: () => {
             this.isRequestSending = false;

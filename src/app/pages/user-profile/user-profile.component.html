@@ -1,0 +1,90 @@
+<div class="flex w-full py-8 md:p-16 justify-center md:items-center">
+    <div class="rounded-lg shadow bg-gray-50 md:h-full w-7/8 md:w-full flex flex-col md:flex-row md:p-6 min-h-[70vh]">
+        <mat-tab-group class="w-full">
+            <!-- rated movies -->
+            <mat-tab label="Rated">
+                @if (!ratedMovies.length) {
+                    <div class="w-full h-[400px] flex justify-center items-center text-2xl">
+                        No movies rated yet!
+                    </div>
+                }
+                @else {
+                    <div class="grid gap-4 md:grid-cols-2 mt-6">
+                        @for(movie of ratedMovies; track movie.imdbID) {
+                            <div class="flex flex-row w-full md:w-[400px] p-4 rounded-sm shadow justify-self-center">
+                                <img class="h-64" [src]="movie.Poster" alt="Movie Poster" />
+                                <div class="flex flex-col justify-between ml-6">
+                                    <div class="w-full">
+                                        <div><b>Title:</b> {{movie.Title}}</div>
+                                        <div><b>Year:</b> {{movie.Year}}</div>
+                                    </div>
+
+                                    <div class="w-full flex items-start">
+                                        <star-rating 
+                                            class="self-center md:self-end"
+                                            [starType]="'svg'"
+                                            staticColor="ok"
+                                            [rating]="movie.personalRating"
+                                            (ratingChange)="saveRated($event, movie)"
+                                        ></star-rating>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </mat-tab>
+
+            <!-- booked movies -->
+            <mat-tab label="Booked">
+                @if (!bookedMovies.length) {
+                    <div class="w-full h-[400px] flex justify-center items-center text-2xl">
+                        No movies booked yet!
+                    </div>
+                }
+                @else {
+                    <div class="grid gap-4 md:grid-cols-2 mt-6">
+                        @for(movie of bookedMovies; track movie.imdbID) {
+                            <div class="flex flex-row w-full md:w-[400px] p-4 rounded-sm shadow justify-self-center max-h-72">
+                                <img class="h-64" [src]="movie.Poster" alt="Movie Poster" />
+                                <div class="flex flex-col w-full ml-6 justify-between">
+                                    <div class="w-full">
+                                        <div><b>Title:</b> {{movie.Title}}</div>
+                                        <div><b>Year:</b> {{movie.Year}}</div>
+    
+                                        <mat-divider></mat-divider>
+                                    </div>
+    
+                                    <div class="w-full flex flex-col overflow-hidden">
+                                        <div class="w-full flex flex-col items-center overflow-auto">
+                                            <b class="my-4">Tickets booked:</b>
+    
+                                            @for(ticket of movie.bookedTickets; track (ticket.row + '' + ticket.seat)) {
+                                                <div class="rounded-xl ticket w-fit px-4 py-2 mb-2">
+                                                    <b>Row:</b> {{ticket.row}} <b>Seat:</b> {{ticket.seat}}
+                                                </div>
+                                            }
+                                        </div>
+                                        
+    
+                                        <div class="w-full flex justify-end pr-2 pt-2">
+                                            <button
+                                                style="color:red"
+                                                mat-icon-button
+                                                type="button"
+                                                matTooltip="Cancel booking"
+                                                (click)="movieService.cancelBooking(movie.imdbID)"
+                                            >
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

@@ -4,21 +4,27 @@
       <div class="inline-flex items-center justify-end w-full">
         @if(!authService.isAuthenticated()) {
             <button
+                class="mat-icon-button-48px"
                 mat-icon-button
                 type="button"
                 [routerLink]="['/', appUrlsHelper.signIn]"
             >
-                <mat-icon>login</mat-icon>
+              <mat-icon class="mat-icon-32px">login</mat-icon>
             </button>
         }
         @else {
             <button
+                class="mat-icon-button-48px"
                 mat-icon-button
                 type="button"
-                (click)="authService.signOut()"
+                [matMenuTriggerFor]="profileMenu"
             >
-                <mat-icon>logout</mat-icon>
+                <mat-icon class="mat-icon-32px">account_circle</mat-icon>
             </button>
+            <mat-menu #profileMenu="matMenu">
+              <button mat-menu-item [routerLink]="['/', appUrlsHelper.profile]">Profile</button>
+              <button mat-menu-item (click)="authService.signOut()">Sign out</button>
+            </mat-menu>
         }
       </div>
     </div>

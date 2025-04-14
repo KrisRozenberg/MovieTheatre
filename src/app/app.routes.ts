@@ -5,17 +5,19 @@ import { noAuthGuard } from './core/auth/guards/no-auth.guard';
 import { MoviesListComponent } from './pages/movies/movies-list/movies-list.component';
 import { movieResolver, moviesListResolver } from './pages/movies/movies.resolver';
 import { MovieComponent } from './pages/movies/movie/movie.component';
+import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { authGuard } from './core/auth/guards/auth.guard';
 
 export const routes: Routes = [
     { path: '', pathMatch: 'full', redirectTo: `${AppUrlsHelper.moviesList}` },
 
     {
-        path: 'sign-in',
+        path: AppUrlsHelper.signIn,
         component: SignInComponent,
         canMatch: [noAuthGuard]
     },
     {
-        path: 'movies',
+        path: AppUrlsHelper.moviesList,
         children: [
             {
                 path: '',
@@ -29,5 +31,10 @@ export const routes: Routes = [
             }
         ]
 
+    },
+    {
+        path: AppUrlsHelper.profile,
+        component: UserProfileComponent,
+        canMatch: [authGuard]
     }
 ];

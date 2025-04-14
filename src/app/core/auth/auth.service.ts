@@ -14,11 +14,7 @@ export class AuthService {
   private _authenticated = false;
 
   private _initialize = ((): void => {
-      const jwtTokenStorage = JSON.parse(
-          localStorage.getItem(ACCESS_TOKEN) || 'null'
-      );
-      this._authenticated = !!jwtTokenStorage?.token;
-
+    this._authenticated = !!localStorage.getItem(ACCESS_TOKEN);
   })();
 
   get accessToken(): string {

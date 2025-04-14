@@ -23,4 +23,10 @@ export interface Movie {
     Type: string; //movie
     personalRating: number;
     comments: string[];
+    bookedTickets: Ticket[];
+}
+
+export interface Ticket {
+    row: number;
+    seat: number;
 }
