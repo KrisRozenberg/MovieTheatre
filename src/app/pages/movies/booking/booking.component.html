@@ -1,0 +1,47 @@
+<div class="h-full flex flex-col justify-between p-8">
+    <div>
+        <div class="w-full flex justify-center mb-8">
+            <div class="h-4 w-64 border"></div>
+        </div>
+        @for (row of rows; track row) {
+            <div class="flex flex-row mt-4">
+                <div class="w-full grid grid-flow-col gap-4">
+                    @for (seat of seats; track seat) {
+                        <div 
+                            class="w-12 h-12 rounded-lg border flex justify-center items-center text-xl cursor-pointer hover:bg-indigo-100"
+                            [ngClass]="{'bg-indigo-300': isTicketSelected({row, seat})}"
+                            (click)="
+                                isTicketSelected({row, seat}) 
+                                    ? unselectTicket({row, seat}) 
+                                    : selectTicket({row, seat})
+                            "
+                            (keydown)="
+                                isTicketSelected({row, seat}) 
+                                    ? unselectTicket({row, seat}) 
+                                    : selectTicket({row, seat})
+                            " 
+                            tabindex="{0}"
+                        >
+                            {{seat}}
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="flex flex-row justify-between">
+        <button
+            class="button-secondary"
+            mat-flat-button
+            type="button"
+            mat-dialog-close
+        >Cancel</button>
+
+        <button
+            mat-flat-button
+            type="submit"
+            (click)="bookTickets()"
+        >Book</button>
+    </div>
+</div>

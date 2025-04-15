@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { BehaviorSubject, map, Observable, ReplaySubject } from 'rxjs';
-import { Movie, MovieShort } from '../models/movie.model';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import { Movie, MovieShort, Ticket } from '../models/movie.model';
 import { PaginatedResponse } from '../models/response.model';
 import { initialFilterPagination } from '../helpers/consts-helper';
 
@@ -12,7 +12,7 @@ import { initialFilterPagination } from '../helpers/consts-helper';
 export class MovieService {
   private readonly _baseUrl = environment.apiUrl;
 
-  private _selectedMovie: ReplaySubject<Movie> = new ReplaySubject<Movie>(1);
+  private _selectedMovie: BehaviorSubject<Movie|null> = new BehaviorSubject<Movie|null>(null);
   private _movies: BehaviorSubject<MovieShort[]> = new BehaviorSubject<MovieShort[]>([]);
   private _ratedMovies: BehaviorSubject<Movie[]> = new BehaviorSubject<Movie[]>([]);
   private _bookedMovies: BehaviorSubject<Movie[]> = new BehaviorSubject<Movie[]>([]);
@@ -21,7 +21,7 @@ export class MovieService {
 
   constructor(private _http: HttpClient) {}
 
-  get selectedMovie$(): Observable<Movie> {
+  get selectedMovie$(): Observable<Movie | null> {
     return this._selectedMovie.asObservable();
   }
 
@@ -72,6 +72,18 @@ export class MovieService {
     this._ratedMovies.next(ratedMovies);
   }
 
+  bookTickets(tickets: Ticket[]): void {
+    const movieToBook = this._selectedMovie.getValue()!;
+    movieToBook.bookedTickets = tickets;
+
+    const bookedMovies = this._bookedMovies
+      .getValue()
+      .filter((movie) => movie.imdbID !== movieToBook.imdbID);
+    bookedMovies.push(movieToBook);
+
+    this._bookedMovies.next(bookedMovies);
+  }
+
   cancelBooking(movieId: string): void {
     const updatedBookedMovies = this._bookedMovies
       .getValue()
@@ -82,6 +94,7 @@ export class MovieService {
 
   private adjustCustomFields(movie: Movie): void {
     this.checkPersonalRating(movie);
+    this.checkBookedTickets(movie);
     movie.comments = [];
   }
 
@@ -91,6 +104,15 @@ export class MovieService {
       .find((movie) => movie.imdbID === movieToCheck.imdbID);
     if (optionalRatedMovie) {
       movieToCheck.personalRating = optionalRatedMovie.personalRating;
+    }
+  }
+
+  private checkBookedTickets(movieToCheck: Movie): void {
+    const optionalBookedMovie = this._bookedMovies
+      .getValue()
+      .find((movie) => movie.imdbID === movieToCheck.imdbID);
+    if (optionalBookedMovie) {
+      movieToCheck.bookedTickets = optionalBookedMovie.bookedTickets;
     }
   }
 
