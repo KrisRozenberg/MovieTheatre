@@ -31,7 +31,7 @@ export class MovieComponent implements OnInit {
     });
   }
 
-  openBookDialog() {
+  openBookDialog(): void {
     this._dialog
       .open(BookingComponent, {
         minWidth: '400px',
@@ -49,7 +49,7 @@ export class MovieComponent implements OnInit {
       });
   }
 
-  openCommentsDialog() {
+  openCommentsDialog(): void {
     this._dialog
       .open(CommentsComponent, {
         minWidth: '400px',
@@ -65,7 +65,7 @@ export class MovieComponent implements OnInit {
       });
   }
 
-  saveRated(event: RatingChangeEvent) {
+  saveRated(event: RatingChangeEvent): void {
     if (event.rating === this.movie.personalRating) return;
     this.movie.personalRating = event.rating;
     this._movieService.rateMovie(this.movie);

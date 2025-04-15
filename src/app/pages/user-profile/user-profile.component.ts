@@ -32,7 +32,7 @@ export class UserProfileComponent implements OnInit {
     })
   }
 
-  saveRated(event: RatingChangeEvent, movie: Movie) {
+  saveRated(event: RatingChangeEvent, movie: Movie): void {
     if (event.rating === movie.personalRating) return;
     movie.personalRating = event.rating;
     this.movieService.rateMovie(movie);

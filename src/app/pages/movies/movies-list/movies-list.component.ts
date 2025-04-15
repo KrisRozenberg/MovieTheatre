@@ -17,8 +17,8 @@ import { Router } from '@angular/router';
 })
 export class MoviesListComponent implements OnInit, OnDestroy {
   movies: MovieShort[];
-  search = new FormControl(initialFilterPagination.search);
-  year = new FormControl('', Validators.compose([
+  search: FormControl = new FormControl(initialFilterPagination.search);
+  year: FormControl = new FormControl('', Validators.compose([
     Validators.min(1910), 
     Validators.max(2025),
     this.firefoxNumberInputValidator
@@ -73,7 +73,7 @@ export class MoviesListComponent implements OnInit, OnDestroy {
       : null;
   }
 
-  goToMovie(id: string) {
+  goToMovie(id: string): void {
     this._router.navigate([`movies/${id}`]);
   }
 }

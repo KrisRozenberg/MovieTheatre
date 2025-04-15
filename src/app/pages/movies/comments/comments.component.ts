@@ -15,7 +15,7 @@ import { MovieService } from '../../../core/services/movie.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommentsComponent {
-  commentControl = new FormControl('');
+  commentControl: FormControl = new FormControl('');
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { comments: string[] },

@@ -13,8 +13,8 @@ import { NgClass } from '@angular/common';
 })
 export class BookingComponent implements OnInit {
   tickets: Ticket[] = [];
-  rows = [1, 2, 3];
-  seats = [1, 2, 3, 4, 5];
+  rows: number[] = [1, 2, 3];
+  seats: number[] = [1, 2, 3, 4, 5];
 
   constructor(
     private _dialogRef: MatDialogRef<BookingComponent>,
@@ -27,20 +27,19 @@ export class BookingComponent implements OnInit {
     }
   }
 
-  selectTicket(ticket: Ticket) {
-    console.log(ticket);
+  selectTicket(ticket: Ticket): void {
     this.tickets.push(ticket);
   }
 
-  unselectTicket(ticketToUnselect: Ticket) {
+  unselectTicket(ticketToUnselect: Ticket): void {
     this.tickets = this.tickets.filter((ticket) => ticket.row !== ticketToUnselect.row || ticket.seat !== ticketToUnselect.seat);
   }
 
-  isTicketSelected(ticketToCheck: Ticket) {
+  isTicketSelected(ticketToCheck: Ticket): boolean {
     return !!this.tickets.find((ticket) => ticket.row === ticketToCheck.row && ticket.seat === ticketToCheck.seat);
   }
 
-  bookTickets() {
+  bookTickets(): void {
     this.tickets.sort((ticketA, ticketB) => (
       ticketA.row - ticketB.row === 0
         ? ticketA.seat - ticketB.seat
