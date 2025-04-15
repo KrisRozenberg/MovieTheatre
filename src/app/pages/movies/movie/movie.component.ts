@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MovieService } from '../../../core/services/movie.service';
 import { Movie, Ticket } from '../../../core/models/movie.model';
 import { MatButton } from '@angular/material/button';
@@ -6,6 +6,7 @@ import { MatIcon } from '@angular/material/icon';
 import { RatingChangeEvent, StarRatingConfigService, StarRatingModule } from 'angular-star-rating';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { BookingComponent } from '../booking/booking.component';
+import { CommentsComponent } from '../comments/comments.component';
 
 @Component({
   selector: 'app-movie',
@@ -20,7 +21,8 @@ export class MovieComponent implements OnInit {
 
   constructor(
     private _movieService: MovieService,
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    private _cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -48,7 +50,19 @@ export class MovieComponent implements OnInit {
   }
 
   openCommentsDialog() {
-    // implement dialog (?? maybe smth else) with comments list & textarea for adding new comment
+    this._dialog
+      .open(CommentsComponent, {
+        minWidth: '400px',
+        height: '500px',
+        autoFocus: false,
+        data: {
+          comments: this.movie.comments
+        }
+      })
+      .afterClosed()
+      .subscribe(() => {
+        this._cdr.markForCheck();
+      });
   }
 
   saveRated(event: RatingChangeEvent) {

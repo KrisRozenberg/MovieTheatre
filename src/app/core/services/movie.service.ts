@@ -92,6 +92,11 @@ export class MovieService {
     this._bookedMovies.next(updatedBookedMovies);
   }
 
+  addComment(comment: string): void {
+    const selectedMovie = this._selectedMovie.getValue()!;
+    selectedMovie.comments.unshift(comment);
+  }
+
   private adjustCustomFields(movie: Movie): void {
     this.checkPersonalRating(movie);
     this.checkBookedTickets(movie);

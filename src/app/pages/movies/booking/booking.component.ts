@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Ticket } from '../../../core/models/movie.model';
 import { MatButton } from '@angular/material/button';
@@ -8,7 +8,8 @@ import { NgClass } from '@angular/common';
   selector: 'app-booking',
   imports: [MatButton, MatDialogModule, NgClass],
   templateUrl: './booking.component.html',
-  styleUrl: './booking.component.scss'
+  styleUrl: './booking.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BookingComponent implements OnInit {
   tickets: Ticket[] = [];
