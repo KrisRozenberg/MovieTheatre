@@ -22,12 +22,12 @@ export const routes: Routes = [
             {
                 path: '',
                 component: MoviesListComponent,
-                resolve: { movie: moviesListResolver }
+                resolve: { isMoviesListLoaded: moviesListResolver }
             },
             {
                 path: ':id',
                 component: MovieComponent,
-                resolve: { movie: movieResolver }
+                resolve: { isMovieLoaded: movieResolver }
             }
         ]
 

@@ -1,8 +1,8 @@
-import { FilterPagination } from "../models/helper.model";
-
 export const ACCESS_TOKEN = 'accessToken';
 
-export const initialFilterPagination = {
-    page: 1,
-    search: 'lady'
-  } as FilterPagination;
+export enum RequestStatusEnum {
+  PENDING = 'pending',
+  LOADING = 'loading',
+  SUCCESS = 'success',
+  ERROR = 'error'
+}

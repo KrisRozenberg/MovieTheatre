@@ -17,14 +17,14 @@
     <mat-divider></mat-divider>
 
     <div class="flex justify-center font-bold text-lg py-2">Other comments:</div>
-    @if (!data.comments.length) {
+    @if (!comments.length) {
         <div class="w-full h-[200px] flex justify-center items-center text-2xl">
             No comments yet!
         </div>
     }
     @else {
         <div class="max-h-56 overflow-auto">
-            @for (comment of data.comments; track comment) {
+            @for (comment of comments; track comment) {
                 <div class="p-6 rounded-lg border border-dotted my-3">{{comment}}</div>
             }
         </div>

@@ -2,11 +2,15 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { MovieService } from '../../../core/services/movie.service';
 import { MovieShort } from '../../../core/models/movie.model';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { initialFilterPagination } from '../../../core/helpers/consts-helper';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { debounceTime, Subject, take, takeUntil } from 'rxjs';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { moviesList } from '../../../core/state/moviesList/moviesList.selectors';
+import { changeSearch, changeYear } from '../../../core/state/filterPagination/filterPagination.action';
+import { FilterPagination } from '../../../core/models/helper.model';
+import { filterPaginationState } from '../../../core/state/filterPagination/filterPagination.selectors';
 
 @Component({
   selector: 'app-movies-list',
@@ -17,54 +21,60 @@ import { Router } from '@angular/router';
 })
 export class MoviesListComponent implements OnInit, OnDestroy {
   movies: MovieShort[];
-  search: FormControl = new FormControl(initialFilterPagination.search);
-  year: FormControl = new FormControl('', Validators.compose([
-    Validators.min(1910), 
-    Validators.max(2025),
-    this.firefoxNumberInputValidator
-  ]));
+  search: FormControl;
+  year: FormControl;
 
-  private readonly _uncubscribeAll = new Subject();
+  private readonly _unsubscribeAll = new Subject();
 
   constructor(
     public movieService: MovieService,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _router: Router
+    private _router: Router,
+    private _store: Store
   ) {}
 
   ngOnInit(): void {
-    this.movieService.movies$.subscribe((movies) => {
-      this.movies = movies;
-    });
+    this._store.select<MovieShort[]>(moviesList)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((movies) => {
+        this.movies = movies;
+        this._changeDetectorRef.markForCheck();
+      });
+
+    this._store.select<FilterPagination>(filterPaginationState)
+      .pipe(take(1))
+      .subscribe((filterPagination) => {
+        this.search = new FormControl(filterPagination.search);
+        this.year = new FormControl(
+          filterPagination.year ?? '', 
+          Validators.compose([
+            Validators.min(1910), 
+            Validators.max(2025),
+            this.firefoxNumberInputValidator
+          ])
+        );
+      })
 
     this.search.valueChanges.pipe(
       debounceTime(600),
-      takeUntil(this._uncubscribeAll)
+      takeUntil(this._unsubscribeAll)
     ).subscribe((value) => {
-      this.movieService.filterPagination.search = value ?? '';
-      this.movieService.getMoviesPaginated().subscribe(() => this._changeDetectorRef.markForCheck());
+      this._store.dispatch(changeSearch({ search: value ?? '' }));
     });
 
     this.year.valueChanges.pipe(
       debounceTime(600),
-      takeUntil(this._uncubscribeAll)
+      takeUntil(this._unsubscribeAll)
     ).subscribe((value) => {
       if (this.year.valid) {
-        if (value) {
-          this.movieService.filterPagination.year = Number(value);
-        }
-        else {
-          delete this.movieService.filterPagination.year;
-        }
-        this.movieService.getMoviesPaginated().subscribe(() => this._changeDetectorRef.markForCheck());
-        
+        this._store.dispatch(changeYear({ year: value }));
       }
     });
   }
 
   ngOnDestroy(): void {
-    this._uncubscribeAll.next(null);
-    this._uncubscribeAll.complete();
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
   }
 
   firefoxNumberInputValidator(control: AbstractControl): { notNumber: boolean } | null {

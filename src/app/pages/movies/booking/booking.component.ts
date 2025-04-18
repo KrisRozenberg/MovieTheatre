@@ -23,7 +23,7 @@ export class BookingComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data.bookedTickets) {
-      this.tickets = this.data.bookedTickets;
+      this.tickets = [...this.data.bookedTickets];
     }
   }
 
